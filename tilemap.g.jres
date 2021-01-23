@@ -57,7 +57,8 @@
             "myTiles.tile5",
             "myTiles.tile7",
             "myTiles.tile8"
-        ]
+        ],
+        "displayName": "level"
     },
     "*": {
         "mimeType": "image/x-mkcd-f4",

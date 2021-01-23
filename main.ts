@@ -4,13 +4,29 @@ namespace SpriteKind {
     export const CORGUY = SpriteKind.create()
     export const Camera = SpriteKind.create()
 }
+game.onUpdate(function() {
+    let happyDogs = sprites.allOfKind(SpriteKind.HappyDog)
+    if(happyDogs.length == dogImgs.length){
+        game.over(true)
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Dog, function(tumbleweed: Sprite, dog: Sprite) {
     if (!isPlaying){
-    isPlaying = true
-    controller.moveSprite(tumbleweed, 0, 0)
-    tumbleweed.follow(dog, 200)
-    story.spriteMoveToTile(dog, tiles.getTileLocation(randint(0, 24), 11), 100)
-    isPlaying = false
+        isPlaying = true
+        
+        story.queueStoryPart(function() {
+            controller.moveSprite(tumbleweed, 0, 0)
+            tumbleweed.follow(dog, 200)
+            story.spriteMoveToTile(dog, tiles.getTileLocation(randint(0, 24), 11), 100)
+            dog.startEffect(effects.hearts, 500)
+        })
+        story.queueStoryPart(function() {
+            //After finished playing
+            controller.moveSprite(tumbleweed, 200, 0)
+            tumbleweed.follow(null)
+            isPlaying = false
+            dog.setKind(SpriteKind.HappyDog)
+        })
     }
 })
 function introSequence () {
